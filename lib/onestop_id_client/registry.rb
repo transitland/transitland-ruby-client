@@ -18,6 +18,10 @@ module OnestopIdClient
           end
         end
       end
+
+      # TODO: remove when this is complete: https://github.com/transitland/onestop-id-registry/pull/12
+      @repo.branch("remotes/origin/extract-ruby").checkout
+
       @repo
     end
 
