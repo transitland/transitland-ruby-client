@@ -4,13 +4,14 @@ module OnestopIdClient
   class Registry
     include Singleton
 
-    REMOTE_URL = 'git@github.com:transitland/onestop-id-registry.git'
-    LOCAL_PATH = File.join(__dir__, '..', '..','tmp', 'onestop-id-registry')
+    # SMELL: we sometimes monkey patch these constants in spec/spec_helper.rb
+    REMOTE_URL ||= 'git@github.com:transitland/onestop-id-registry.git'
+    LOCAL_PATH ||= File.join(__dir__, '..', '..','tmp', 'onestop-id-registry')
 
     def self.repo(force_update: false)
       if !defined?(@repo) || force_update
         begin
-          @repo = Git.open(REMOTE_URL)
+          @repo = Git.open(LOCAL_PATH)
           @repo.pull if force_update
         rescue ArgumentError => error
           if error.message == 'path does not exist'

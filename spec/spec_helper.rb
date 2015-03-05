@@ -9,6 +9,14 @@ SimpleCov.start do
   add_filter 'spec' # ignore spec files
 end
 
+# monkey patch
+module OnestopIdClient
+  class Registry
+    include Singleton
+    LOCAL_PATH = File.join(__dir__, '..', 'test_data', 'onestop-id-registry')
+  end
+end
+
 require 'onestop_id_client'
 
 VCR.configure do |c|
