@@ -12,6 +12,7 @@ end
 RSpec.configure do |config|
   config.extend VCR::RSpec::Macros
 end
+require 'onestop_id_client'
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), '/test_data/vcr_cassettes')

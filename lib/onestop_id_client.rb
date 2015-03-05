@@ -1,8 +1,4 @@
-require 'onestop_id_client/version'
-require 'onestop_id_client/onestop_id'
-require 'onestop_id_client/registry'
-Dir["entities/*.rb"].each {|file| require file }
+Gem.find_files("onestop_id_client/**/*.rb").each { |path| require path }
 
 module OnestopIdClient
-  # Your code goes here...
 end

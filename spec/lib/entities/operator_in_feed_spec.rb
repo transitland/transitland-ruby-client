@@ -1,5 +1,3 @@
-require_relative '../../../lib/onestop_id_client/entities/operator_in_feed'
-
 describe OnestopIdClient::Entities::OperatorInFeed do
   it 'can be created from the feed side' do
     feed = OnestopIdClient::Entities::Feed.new(onestop_id: 'f-9q9-BART')

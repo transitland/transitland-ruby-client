@@ -1,5 +1,3 @@
-require_relative '../../../lib/onestop_id_client/entities/operator'
-
 describe OnestopIdClient::Entities::Operator do
   context 'all' do
     it 'can be found by US NTD ID' do

@@ -1,5 +1,3 @@
-require_relative '../../lib/onestop_id_client/onestop_id'
-
 describe OnestopIdClient::OnestopId do
   context 'initializes as an object' do
     it 'from a string' do

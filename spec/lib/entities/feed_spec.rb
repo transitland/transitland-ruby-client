@@ -1,5 +1,3 @@
-require_relative '../../../lib/onestop_id_client/entities/feed'
-
 describe OnestopIdClient::Entities::Feed do
   context 'all' do
   end
