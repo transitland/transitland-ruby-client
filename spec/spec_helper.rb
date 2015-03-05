@@ -24,3 +24,9 @@ VCR.configure do |c|
   c.hook_into :webmock
   c.configure_rspec_metadata!
 end
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    OnestopIdClient::Registry.repo # pull down a local copy of the repo for use during the tests
+  end
+end
