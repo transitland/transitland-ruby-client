@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/transitland/onestop-id-ruby-client.svg?style=svg)](https://circleci.com/gh/transitland/onestop-id-ruby-client)
+
 # onestop-id-(ruby)-client
 
 TODO: Write a gem description
