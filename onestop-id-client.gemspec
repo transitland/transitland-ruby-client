@@ -8,12 +8,12 @@ Gem::Specification.new do |spec|
   spec.version       = OnestopIdClient::VERSION
   spec.authors       = ['Drew Dara-Abrams']
   spec.email         = ['drew@mapzen.com']
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Read and write public-transit identities to the Onestop ID Registry/}
+  spec.description   = %q{}
   spec.homepage      = 'https://github.com/transitland/onestop-id-ruby-client'
   spec.license       = 'MIT'
 
-  spec.files         = `git ls-files -z`.split('\x0')
+  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE.txt", "*.md"]
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
