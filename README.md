@@ -22,4 +22,5 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+- `ENV['ONESTOP_ID_REGISTRY_REMOTE_URL']`
+- `ENV['ONESTOP_ID_REGISTRY_LOCAL_PATH']`

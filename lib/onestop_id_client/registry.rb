@@ -4,9 +4,8 @@ module OnestopIdClient
   class Registry
     include Singleton
 
-    # SMELL: we sometimes monkey patch these constants in spec/spec_helper.rb
-    REMOTE_URL ||= 'git@github.com:transitland/onestop-id-registry.git'
-    LOCAL_PATH ||= File.join(__dir__, '..', '..','tmp', 'onestop-id-registry')
+    REMOTE_URL = ENV['ONESTOP_ID_REGISTRY_REMOTE_URL'] || 'git@github.com:transitland/onestop-id-registry.git'
+    LOCAL_PATH = ENV['ONESTOP_ID_REGISTRY_LOCAL_PATH'] || File.join(__dir__, '..', '..','tmp', 'onestop-id-registry')
 
     def self.repo(force_update: false)
       if !defined?(@repo) || force_update
