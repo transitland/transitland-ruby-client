@@ -1,4 +1,5 @@
 [![Circle CI](https://circleci.com/gh/transitland/onestop-id-ruby-client.svg?style=svg)](https://circleci.com/gh/transitland/onestop-id-ruby-client)
+[![Gem Version](https://badge.fury.io/rb/onestop-id-client.svg)](http://badge.fury.io/rb/onestop-id-client)
 
 # onestop-id-(ruby)-client
 
