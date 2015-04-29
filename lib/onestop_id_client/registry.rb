@@ -1,4 +1,5 @@
 require 'git'
+require 'singleton'
 
 module OnestopIdClient
   class Registry
