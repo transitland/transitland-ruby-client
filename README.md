@@ -69,6 +69,10 @@ To find all feeds that include an operator identifier:
 
     [7] pry(main)> TransitlandClient::Entities::Feed.find_by(operator_identifier: 'usntd://4034')
 
+To get the URL for a feed:
+
+    [8] pry(main)> TransitlandClient::Entities::Feed.find_by(onestop_id: 'f-9q9-bayarearapidtransit').url
+
 To update the local copy of the Feed Registry (pulling any recent commits):
 
-    [8] pry(main)> TransitlandClient::FeedRegistry.repo(force_update: true)
+    [9] pry(main)> TransitlandClient::FeedRegistry.repo(force_update: true)
