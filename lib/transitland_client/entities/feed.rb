@@ -11,7 +11,7 @@ module TransitlandClient
             json_file = File.open(FeedRegistry.json_file_for_entity_with_name('feeds', onestop_id), 'r')
             parsed_json = JSON.parse(json_file.read)
           rescue Errno::ENOENT
-            raise StandardError.new("no JSON file found with a Onestop ID of #{onestop_id}")
+            raise ArgumentError.new("no JSON file found with a Onestop ID of #{onestop_id}")
           end
         elsif json_blob
           parsed_json = JSON.parse(json_blob)
