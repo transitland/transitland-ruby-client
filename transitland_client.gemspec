@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'onestop_id_client/version'
+require 'transitland_client/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'onestop-id-client'
-  spec.version       = OnestopIdClient::VERSION
+  spec.name          = 'transitland_client'
+  spec.version       = TransitlandClient::VERSION
   spec.authors       = ['Drew Dara-Abrams']
   spec.email         = ['drew@mapzen.com']
-  spec.summary       = %q{Read and write public-transit identities to the Onestop ID Registry/}
+  spec.summary       = %q{Read and write data from the Transitland Datastore and Feed Registry}
   spec.description   = %q{}
-  spec.homepage      = 'https://github.com/transitland/onestop-id-ruby-client'
+  spec.homepage      = 'https://github.com/transitland/transitland-ruby-client'
   spec.license       = 'MIT'
 
   spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE.txt", "*.md"]

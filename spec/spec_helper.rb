@@ -9,9 +9,9 @@ SimpleCov.start do
   add_filter 'spec' # ignore spec files
 end
 
-ENV['ONESTOP_ID_REGISTRY_LOCAL_PATH'] = File.join(__dir__, 'test_data', 'onestop-id-registry')
 
-require 'onestop_id_client'
+
+require 'transitland_client'
 
 VCR.configure do |c|
   c.cassette_library_dir = File.join(File.dirname(__FILE__), '/test_data/vcr_cassettes')
@@ -20,7 +20,8 @@ VCR.configure do |c|
 end
 
 RSpec.configure do |config|
-  config.before(:suite) do
-    OnestopIdClient::Registry.repo # pull down a local copy of the repo for use during the tests
+  config.before(:each) do
+    stub_const('ENV', ENV.to_hash.merge('TRANSITLAND_FEED_REGISTRY_LOCAL_PATH' => File.join(__dir__, 'test_data', 'transitland-feed-registry')))
+    TransitlandClient::FeedRegistry.repo # set the URL/PATH variables
   end
 end
