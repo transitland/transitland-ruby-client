@@ -21,6 +21,6 @@ end
 
 RSpec.configure do |config|
   config.before(:suite) do
-    OnestopIdClient::Registry.repo # pull down a local copy of the repo for use during the tests
+    TransitlandClient::Registry.repo # pull down a local copy of the repo for use during the tests
   end
 end

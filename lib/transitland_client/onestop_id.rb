@@ -1,4 +1,4 @@
-module OnestopIdClient
+module TransitlandClient
   class OnestopId
     ENTITY_TO_PREFIX = {
       'stop' => 's',
