@@ -7,7 +7,7 @@ module TransitlandClient
     include Singleton
 
     def self.repo(force_update: false)
-      @remote_url ||= ENV['TRANSITLAND_FEED_REGISTRY_URL'] || 'git@github.com:transitland/transitland-feed-registry.git'
+      @remote_url ||= ENV['TRANSITLAND_FEED_REGISTRY_URL'] || 'https://github.com/transitland/transitland-feed-registry.git'
       @local_path ||= ENV['TRANSITLAND_FEED_REGISTRY_PATH'] || File.join(__dir__, '..', '..','tmp', 'transitland-feed-registry')
 
       if !defined?(@repo) || force_update
