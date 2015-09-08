@@ -3,7 +3,7 @@ require 'json'
 module TransitlandClient
   module Entities
     class Feed
-      attr_accessor :onestop_id, :url, :feed_format, :tags, :operators_in_feed
+      attr_accessor :onestop_id, :url, :feed_format, :tags, :operators_in_feed, :license
 
       def initialize(onestop_id: nil, json_blob: nil)
         if onestop_id
@@ -76,6 +76,7 @@ module TransitlandClient
           ['@url', 'url'],
           ['@feed_format', 'feedFormat'],
           ['@tags', 'tags'],
+          ['@license', 'license']
         ].each do |mapping|
           instance_variable_set(mapping[0], parsed_json[mapping[1]])
         end
