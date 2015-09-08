@@ -22,7 +22,7 @@ describe TransitlandClient::Entities::Feed do
     it 'has associated OperatorInFeed entities' do
       feed = TransitlandClient::Entities::Feed.new(onestop_id: 'f-9q9-bayarearapidtransit')
       expect(feed.operators_in_feed.count).to eq 1
-      expect(feed.operators_in_feed.first.gtfs_agency_id).to eq 'bayarearapidtransit'
+      expect(feed.operators_in_feed.first.gtfs_agency_id).to eq 'BART'
       expect(feed.operators_in_feed.first.operator_onestop_id).to eq 'o-9q9-bayarearapidtransit'
     end
   end
