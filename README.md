@@ -1,6 +1,8 @@
 [![Circle CI](https://circleci.com/gh/transitland/transitland-ruby-client.svg?style=svg)](https://circleci.com/gh/transitland/transitland-ruby-client)
 [![Gem Version](https://badge.fury.io/rb/transitland-client.svg)](http://badge.fury.io/rb/transitland-client)
 
+<span style="color:red;">Migration Warning.</span> Throughout October 2015, we're moving feed and operator records from the [GitHub-based Feed Registry](https://github.com/transitland/transitland-feed-registry) into Transitland's [Datastore API](https://github.com/transitland/transitland-datastore/blob/master/README.md#api-endpoints). This client library will be updated soon to work with the new Datastore API endpoints, but will be broken in the meantime. Thanks for your patience&mdash;and your interest in Transitland!
+
 # transitland-(ruby)-client
 
 This Ruby library enables you to read from the [Transitland Feed Registry](https://github.com/transitland/transitland-feed-registry). In the future, it will also provide access to the [Transitland Datastore](https://github.com/transitland/transitland-datastore), and allow you to write to both.
