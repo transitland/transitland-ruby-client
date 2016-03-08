@@ -1,7 +1,7 @@
 [![Circle CI](https://circleci.com/gh/transitland/transitland-ruby-client.svg?style=svg)](https://circleci.com/gh/transitland/transitland-ruby-client)
 [![Gem Version](https://badge.fury.io/rb/transitland-client.svg)](http://badge.fury.io/rb/transitland-client)
 
-<span style="color:red;">Migration Warning.</span> Throughout October 2015, we're moving feed and operator records from the [GitHub-based Feed Registry](https://github.com/transitland/transitland-feed-registry) into Transitland's [Datastore API](https://github.com/transitland/transitland-datastore/blob/master/README.md#api-endpoints). This client library will be updated soon to work with the new Datastore API endpoints, but will be broken in the meantime. Thanks for your patience&mdash;and your interest in Transitland!
+*MIGRATION WARNING*. As of March 2016, this client library is being updated to work with Transitland's [Datastore API](https://github.com/transitland/transitland-datastore/blob/master/README.md#api-endpoints). It will be broken in the meantime. Thank you for your patience!
 
 # transitland-(ruby)-client
 
