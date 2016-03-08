@@ -1,5 +1,6 @@
-#Gem.find_files("transitland_client/**/*.rb").each { |path| require path }
+Gem.find_files("transitland_client/**/*.rb").each { |path| require path }
 require 'httparty'
+require_relative 'transitland_client/cache.rb'
 
 module TransitlandClient
 
@@ -18,13 +19,23 @@ module TransitlandClient
     end
 
     def self.handle_caching(options)
-      yield
+      if entity = TransitlandClient::Cache.get_entity(options[:onestop_id])
+        puts " GETTING FROM CACHE"
+        return entity
+      else
+        yield.tap do |response|
+          puts "GOT FROM API"
+          TransitlandClient::Cache.set_entity(options[:onestop_id],response)
+          return response
+        end
+      end
     end
 
-    def self.find(options={})
+    def self.find_by(options={})
       @entity_objects ||= []
-      handle_caching(options) do
-        response = HTTParty.get(base_path + "feeds", query: options).body
+      response = nil
+      response = handle_caching(options) do
+        HTTParty.get(base_path + "feeds", query: options).body
       end
       parsed_json = JSON.parse(response)
       parsed_json["feeds"].each do |feed|
@@ -42,12 +53,11 @@ module TransitlandClient
           ['@tags', 'tags'],
           ['@license', 'license']
         ].each do |mapping|
-          puts "JSON MAPPING #{json[mapping[1]]}"
           instance_variable_set(mapping[0], json[mapping[1]])
         end
     end
   end
 end
 
-puts "Hello world #{TransitlandClient::Feed.find(onestop_id: "f-9q9-caltrain")}"
-puts "Hello world #{TransitlandClient::Feed.find(onestop_id: "f-9q9-caltrain")}"
+puts "Hello world #{TransitlandClient::Feed.find_by(onestop_id: "f-9q9-caltrain")}"
+puts "Hello world #{TransitlandClient::Feed.find_by(onestop_id: "f-9q9-caltrain")}"
