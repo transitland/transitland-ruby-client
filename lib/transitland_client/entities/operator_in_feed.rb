@@ -2,7 +2,6 @@ require_relative 'feed'
 # require_relative 'operator'
 
 module TransitlandClient
-  module Entities
     class OperatorInFeed
       attr_accessor :gtfs_agency_id, :operator_onestop_id, :feed_onestop_id, :feed, :identifiers
 
@@ -22,5 +21,4 @@ module TransitlandClient
         self
       end
     end
-  end
 end
