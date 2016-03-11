@@ -1,7 +1,7 @@
 describe TransitlandClient::Feed do
   context 'individual' do
     it 'can be initialized from a JSON file, by providing the appropriate Onestop ID' do
-      VCR.use_cassette("test") do
+      VCR.use_cassette("test", :record => :new_episodes) do
         feed = TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain')
         expect(feed.onestop_id).to eq 'f-9q9-caltrain'
         expect(feed.feed_format).to eq 'gtfs'
@@ -58,7 +58,6 @@ describe TransitlandClient::Feed do
     end
 
     it 'fails gracefully' do
-      pending
       expect {
         TransitlandClient::Feed.find_by
       }.to raise_error(ArgumentError)

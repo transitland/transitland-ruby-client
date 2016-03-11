@@ -14,22 +14,19 @@ module TransitlandClient
       if entity = TransitlandClient::Cache.get_entity(options[:onestop_id])
         return entity
       else
-        yield.tap do |response|
+        TransitlandClient::Fetcher.get_json_data_from_api("#{base_path}#{endpoint}", query: options)
           TransitlandClient::Cache.set_entity(options[:onestop_id],response)
           return response
-        end
       end
     end
 
-    def self.find_by(options={})
+    def self.find_by(options)
+      raise ArgumentError if !options
+
       found_objects = []
-      response = nil
-      response = handle_caching(options) do
-        HTTParty.get("#{base_path}#{endpoint}", query: options).body
-      end
-      parsed_json = JSON.parse(response)
-      parsed_json[endpoint].each do |feed|
-        found_objects << new(feed)
+      entity_instances = TransitlandClient::Fetcher.get(endpoint, options)
+      entity_instances.each do |entity|
+        found_objects << new(entity)
       end
 
       if options[:onestop_id]
