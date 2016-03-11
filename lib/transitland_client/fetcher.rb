@@ -6,7 +6,13 @@ module TransitlandClient
     BASE_PATH = "https://transit.land/api/v1/"
 
     def self.get(endpoint, options)
-      return get_json_data_from_api(endpoint, options)
+      if entity = TransitlandClient::Cache.get_entity(options[:onestop_id])
+        return entity
+      else
+        entity_instances = get_json_data_from_api(endpoint, options)
+        ransitlandClient::Cache.set_entity(entity_instances)
+        return response
+      end
     end
    
     private 
@@ -29,7 +35,7 @@ module TransitlandClient
         results  = JSON.parse(response.body)
         data    += results[endpoint]
       end
-puts "DATA #{data}"      
+      
       return data
     end
   end

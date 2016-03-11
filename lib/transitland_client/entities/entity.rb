@@ -1,13 +1,11 @@
 module TransitlandClient
   class Entity
-    def self.base_path
-      "https://transit.land/api/v1/"
-    end
-    def self.endpoint
-      "#{self.to_s.split(':')[-1].downcase}s"
-    end
     def initialize(json)
       map_json(json)
+    end
+
+    def self.endpoint
+      "#{self.to_s.split(':')[-1].downcase}s"
     end
 
     def self.handle_caching(options)
@@ -22,18 +20,16 @@ module TransitlandClient
 
     def self.find_by(options)
       raise ArgumentError if !options
+      raise ArgumentError if options[:onestop_id] && options.keys.length > 1
 
       found_objects = []
       entity_instances = TransitlandClient::Fetcher.get(endpoint, options)
+
       entity_instances.each do |entity|
         found_objects << new(entity)
       end
 
-      if options[:onestop_id]
-        return found_objects.first
-      else
-        return found_objects
-      end
+      return (options[:onestop_id]) ? found_objects.first : found_objects
     end
 
     def map_json(json)
