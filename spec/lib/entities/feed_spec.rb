@@ -16,10 +16,11 @@ describe TransitlandClient::Feed do
     end
 
     it 'will cleanly fail when no JSON file found to go with provided Onestop ID' do
-      pending
-      expect {
-        TransitlandClient::Feed.new(onestop_id: 'f-9q9-NoBART')
-      }.to raise_error(ArgumentError, 'no JSON file found with a Onestop ID of f-9q9-NoBART')
+      VCR.use_cassette("test", :record => :new_episodes) do
+        expect {
+          TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-NoBART')
+        }.to raise_error(TransitlandClient::ApiException)
+      end
     end
 
     it 'has associated OperatorInFeed entities' do

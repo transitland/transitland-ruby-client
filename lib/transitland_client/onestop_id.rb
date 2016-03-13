@@ -11,7 +11,8 @@ module TransitlandClient
 
     attr_accessor :entity_prefix, :geohash, :name
 
-    def initialize(string: nil, entity_prefix: nil, geohash: nil, name: nil)
+#    def initialize(string: nil, entity_prefix: nil, geohash: nil, name: nil)
+    def initialize(string)#: nil, entity_prefix: nil, geohash: nil, name: nil)
       errors = []
 
       if string && string.length > 0
