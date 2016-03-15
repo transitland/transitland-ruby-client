@@ -1,4 +1,4 @@
 module TransitlandClient
-  class ApiException < Exception
+  class ApiException < StandardError
   end
 end

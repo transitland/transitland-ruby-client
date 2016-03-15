@@ -11,7 +11,6 @@ module TransitlandClient
 
     def self.get_entity(onestop_id)
       create_entity_table if !table_exists?(:entities)
-     
       if entity = look_for_entity(onestop_id)
         return JSON.parse(entity)
       else
@@ -41,8 +40,11 @@ module TransitlandClient
     def self.set_query(endpoint, options, entities)
       create_queries_table if !table_exists?(:queries)
       entities.each do |entity|
-        @@db.execute("INSERT INTO queries (query_id, onestop_id) VALUES (?,?)", [generate_query_id(endpoint, options), entity["onestop_id"]])
-        set_entity(entity["onestop_id"], entity)
+        onestop_id = entity["onestop_id"]
+        @@db.execute("INSERT INTO queries (query_id, onestop_id) VALUES (?,?)", [generate_query_id(endpoint, options), onestop_id])
+        if !get_entity(onestop_id)
+          set_entity(onestop_id, entity)
+        end
       end
     end
 
@@ -54,9 +56,14 @@ module TransitlandClient
     
       def self.generate_query_id(endpoint, options)
         query_id = endpoint
-        puts "ENDPOINT #{endpoint} OPTIONS #{options}"
         OPTIONS.each do |option|
-          query_id  += options[option] if options[option]
+          if options[option]
+            if options[option].class == String
+              query_id += ";" + options[option]
+            else
+              query_id += ";" + options[option].to_cache_key
+            end
+          end
         end
         
         return query_id
@@ -76,7 +83,6 @@ module TransitlandClient
 
       def self.look_for_entity(id)
         results = @@db.execute("SELECT entity FROM entities WHERE onestop_id=?", [id])
-        puts "RESULTS #{results}"
         raise "Only one entity expected." if results.length > 1
         return (results.length == 0) ? nil : results[0][0]
       end

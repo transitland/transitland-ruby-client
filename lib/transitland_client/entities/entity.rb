@@ -5,7 +5,7 @@ module TransitlandClient
     end
 
     def self.endpoint
-      "#{self.to_s.split(':')[-1].downcase}s"
+      "#{self.to_s.split(':')[-1].gsub(/(.)([A-Z])/,'\1_\2').downcase}s"
     end
 
     def self.handle_caching(options)
@@ -22,7 +22,7 @@ module TransitlandClient
       raise ArgumentError if !options
       raise ArgumentError if options[:onestop_id] && options.keys.length > 1
 
-      options = validate_options(options)
+      options = TransitlandClient::OptionList.new(options)
       found_objects = []
       entity_instances = TransitlandClient::Fetcher.get(endpoint, options)
       entity_instances.each do |entity|
@@ -30,14 +30,6 @@ module TransitlandClient
       end
 
       return (options[:onestop_id]) ? found_objects.first : found_objects
-    end
-    
-    def self.validate_options(options)
-      lookup = { :bbox => TransitlandClient::BoundingBox
-      }
-      options.each do |key, value|
-        lookup[key].new(value) if lookup[key]
-      end
     end
 
     def map_json(json)

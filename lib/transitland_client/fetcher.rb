@@ -7,11 +7,11 @@ module TransitlandClient
 
     def self.get(endpoint, options)
       if options[:onestop_id]
-        if entity = TransitlandClient::Cache.get_entity(options[:onestop_id])
+        if entity = TransitlandClient::Cache.get_entity(options[:onestop_id].to_url)
           return entity
         else
           entity_instance = get_json_data_from_api(endpoint, options)
-          TransitlandClient::Cache.set_entity(options[:onestop_id], entity_instance)
+          TransitlandClient::Cache.set_entity(options[:onestop_id].to_url, entity_instance)
           return entity_instance
         end
       else
@@ -32,14 +32,13 @@ module TransitlandClient
     def self.get_json_data_from_api(endpoint, options)
       data    = []
 
-      response = HTTParty.get("#{BASE_PATH}#{endpoint}", query: options)
+      response = HTTParty.get("#{BASE_PATH}#{endpoint}", query: options.to_url)
+      puts "RESPONSE #{response}"
       raise TransitlandClient::ApiException if !response[endpoint]
       results  = JSON.parse(response.body)
       data    += results[endpoint]
-      puts "RESPONSE: #{response}"
   
       while url = response["meta"]["next"] do
-        puts "URL #{url}"
  
         response = HTTParty.get(url)
         
