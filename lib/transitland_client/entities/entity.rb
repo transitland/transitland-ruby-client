@@ -8,16 +8,6 @@ module TransitlandClient
       "#{self.to_s.split(':')[-1].gsub(/(.)([A-Z])/,'\1_\2').downcase}s"
     end
 
-    def self.handle_caching(options)
-      if entity = TransitlandClient::Cache.get_entity(options[:onestop_id])
-        return entity
-      else
-        TransitlandClient::Fetcher.get_json_data_from_api("#{base_path}#{endpoint}", query: options)
-          TransitlandClient::Cache.set_entity(options[:onestop_id],response)
-          return response
-      end
-    end
-
     def self.find_by(options)
       raise ArgumentError if !options
       raise ArgumentError if options[:onestop_id] && options.keys.length > 1

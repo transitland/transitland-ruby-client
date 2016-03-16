@@ -40,7 +40,7 @@ module TransitlandClient
     def self.set_query(endpoint, options, entities)
       create_queries_table if !table_exists?(:queries)
       entities.each do |entity|
-        onestop_id = entity["onestop_id"]
+        onestop_id = (endpoint == "schedule_stop_pairs") ? "#{entity["origin_onestop_id"]}:#{entity["destination_onestop_id"]}" : entity["onestop_id"]
         @@db.execute("INSERT INTO queries (query_id, onestop_id) VALUES (?,?)", [generate_query_id(endpoint, options), onestop_id])
         if !get_entity(onestop_id)
           set_entity(onestop_id, entity)
