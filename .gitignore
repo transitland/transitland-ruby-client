@@ -7,4 +7,5 @@ Gemfile.lock
 
 *.gem
 *.db
+*.log
 /spec/test_data/vcr_cassettes

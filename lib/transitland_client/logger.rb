@@ -3,8 +3,8 @@ require 'logger'
 module TransitlandClient
   class Log
     
-    @@logger = Logger.new STDOUT
-    @@logger.level = Logger::DEBUG
+    @@logger = Logger.new 'tl.log'
+    @@logger.level = Logger::INFO
     @@logger.datetime_format = '%Y-%m-%d %H:%M:%S '
         
     def self.info(msg)

@@ -8,9 +8,12 @@ module TransitlandClient
     FILENAME = "transitland.db"
 
     @@db = SQLite3::Database.open(FILENAME)
+    @@db.execute("PRAGMA synchronous = OFF")
+    @@db.execute("PRAGMA journal_mode = MEMORY")
 
     def self.get_entity(onestop_id)
-      create_entity_table if !table_exists?(:entities)
+      create_entities_table if !entities_table_exists?
+      
       if entity = look_for_entity(onestop_id)
         return JSON.parse(entity)
       else
@@ -19,18 +22,23 @@ module TransitlandClient
     end
 
     def self.set_entity(onestop_id, entity)
-      create_entity_table if !table_exists?(:entities)
-      @@db.execute("INSERT INTO entities (onestop_id, entity) VALUES (?,?)", [onestop_id, JSON.generate(entity)])
+      create_entities_table if !entities_table_exists?
+      
+      @@db.prepare("INSERT INTO entities (onestop_id, entity) VALUES (?,?)").execute(onestop_id, JSON.generate(entity))
     end
     
     def self.get_query(endpoint, options)
-      create_queries_table if !table_exists?(:queries)
+      create_queries_table if !queries_table_exists?
       
       if onestop_ids = look_for_query(endpoint, options)
         entities = []
-        onestop_ids.each do |onestop_id|
+        
+        @@db.execute("BEGIN TRANSACTION")
+        onestop_ids.each_with_index do |onestop_id, i|
+          TransitlandClient::Log.info "Retrieving #{endpoint} #{i+1} of #{onestop_ids.length}"
           entities << get_entity(onestop_id)
         end
+        @@db.execute("END TRANSACTION")
         return entities
       else
         return nil
@@ -38,14 +46,20 @@ module TransitlandClient
     end
     
     def self.set_query(endpoint, options, entities)
-      create_queries_table if !table_exists?(:queries)
-      entities.each do |entity|
+      create_queries_table if !queries_table_exists?
+      
+      @@db.execute("BEGIN TRANSACTION")
+      entities.each_with_index do |entity,i|
+        TransitlandClient::Log.info "Caching #{endpoint} #{i+1} of #{entities.length}"
+
+        # FIXME this sucks. Move it into the entity class *somehow*
         onestop_id = (endpoint == "schedule_stop_pairs") ? "#{entity["origin_onestop_id"]}:#{entity["destination_onestop_id"]}" : entity["onestop_id"]
         @@db.execute("INSERT INTO queries (query_id, onestop_id) VALUES (?,?)", [generate_query_id(endpoint, options), onestop_id])
         if !get_entity(onestop_id)
           set_entity(onestop_id, entity)
         end
       end
+      @@db.execute("END TRANSACTION")
     end
 
     private
@@ -69,16 +83,30 @@ module TransitlandClient
         return query_id
       end
 
-      def self.table_exists?(table_name)
-        return @@db.execute("SELECT * FROM sqlite_master WHERE name='#{table_name.to_s}' and type='table'").length > 0
+      def self.entities_table_exists?
+        if @entities_table
+          return true
+        else
+          return @@db.execute("SELECT * FROM sqlite_master WHERE name='entities' and type='table'").length > 0
+        end
       end
-
-      def self.create_entity_table
-        @@db.execute("CREATE TABLE entities(onestop_id varchar(50) primary key, entity blob)")
+     
+      def self.create_entities_table
+        @@db.execute("CREATE TABLE entities(onestop_id varchar(50), entity blob, PRIMARY KEY(onestop_id))")
+        @entities_table = true
+      end
+      
+      def self.queries_table_exists?
+        if @queries_table
+          return true
+        else
+          return @@db.execute("SELECT * FROM sqlite_master WHERE name='queries' and type='table'").length > 0
+        end
       end
       
       def self.create_queries_table
         @@db.execute("CREATE TABLE queries(query_id varchar(200), onestop_id varchar(50))")
+        @queries_table = true
       end
 
       def self.look_for_entity(id)
