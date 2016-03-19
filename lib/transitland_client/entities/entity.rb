@@ -1,11 +1,23 @@
 module TransitlandClient
   class Entity
+    
     def initialize(json)
-      map_json(json)
+      @json       = json
+      @attributes = @json.keys.map { |key| key.to_sym }
     end
 
     def self.endpoint
       "#{self.to_s.split(':')[-1].gsub(/(.)([A-Z])/,'\1_\2').downcase}s"
+    end
+    
+    def get(key)
+      raise ArgumentError if key.class != Symbol
+      raise ArgumentError if !@attributes.include?(key)
+      return @json[key.to_s]
+    end
+    
+    def get_attributes
+      return @attributes
     end
 
     def self.find_by(options)
@@ -14,19 +26,14 @@ module TransitlandClient
 
       options = TransitlandClient::OptionList.new(options)
       found_objects = []
-      entity_instances = TransitlandClient::Fetcher.get(endpoint, options)
+      entity_instances = Fetcher.get(endpoint, options)
       entity_instances.each do |entity|
         found_objects << new(entity)
       end
 
       return (options[:onestop_id]) ? found_objects.first : found_objects
     end
-
-    def map_json(json)
-      json.each do |key, value|
-        instance_variable_set("@#{key}", json[key])
-        self.class.class_eval { attr_reader key.to_sym }
-      end
-    end
   end
+  
+  private_constant :Entity
 end

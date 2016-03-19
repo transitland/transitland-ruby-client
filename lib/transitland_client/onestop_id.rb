@@ -96,7 +96,8 @@ module TransitlandClient
       when :geohash
         !(value =~ /[^a-z\d]/)
       when :name
-        !(value =~ /[^a-zA-Z\d]/)
+        # FIXME adding '<' and '~'
+        !(value =~ /[^a-zA-Z<~\d]/)
       else
         false
       end

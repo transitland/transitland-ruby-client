@@ -16,11 +16,11 @@ require 'transitland_client/entities/schedule_stop_pair'
 
 module TransitlandClient
 end
-start_time = Time.now
+#start_time = Time.now
 #puts "RESULTS #{TransitlandClient::Stop.find_by(bbox: '-78.0, 39.0,-75.0, 41.0').length}"
-puts "RESULTS #{TransitlandClient::ScheduleStopPair.find_by(bbox: '-78.0, 39.0,-75.0, 41.0',
-                                                            date: '2016-03-16',
-                                                            origin_departure_between: '07:30:00,08:00:00').length}"
-puts "Process took #{Time.now - start_time} seconds"
+#puts "RESULTS #{TransitlandClient::ScheduleStopPair.find_by(bbox: '-78.0, 39.0,-75.0, 41.0',
+#                                                            date: '2016-03-16',
+#                                                            origin_departure_between: '07:30:00,08:00:00').length}"
+#puts "Process took #{Time.now - start_time} seconds"
 #https://transit.land/api/v1/schedule_stop_pairs?bbox=-78.0,%2039.0,-75.0,%2041.0&date=2016-03-16&origin_departure_between=07:30:00,08:00:00
 #puts "SECOND #{TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain').onestop_id}"
