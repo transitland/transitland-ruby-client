@@ -2,7 +2,8 @@ module TransitlandClient
   class Entity
     
     def initialize(json)
-      raise ArgumentError if json.class != Hash
+      raise TransitlandClient::EntityException if !json
+      raise TransitlandClient::EntityException if json.class != Hash
       
       @json       = json
       @attributes = @json.keys.map { |key| key.to_sym }
@@ -13,8 +14,8 @@ module TransitlandClient
     end
     
     def get(key)
-      raise ArgumentError if key.class != Symbol
-      raise ArgumentError if !@attributes.include?(key)
+      raise TransitlandClient::EntityException if key.class != Symbol
+      raise TransitlandClient::EntityException if !@attributes.include?(key)
       return @json[key.to_s]
     end
     
@@ -23,12 +24,13 @@ module TransitlandClient
     end
 
     def self.find_by(options)
-      raise ArgumentError if !options
-      raise ArgumentError if options[:onestop_id] && options.keys.length > 1
+      raise TransitlandClient::EntityException if !options
+      raise TransitlandClient::EntityException if options[:onestop_id] && options.keys.length > 1
 
       options = TransitlandClient::OptionList.new(options)
       found_objects = []
       entity_instances = Fetcher.get(endpoint, options)
+      
       entity_instances.each do |entity|
         found_objects << new(entity)
       end

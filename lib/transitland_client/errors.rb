@@ -3,4 +3,6 @@ module TransitlandClient
   end
   class DatabaseException < StandardError
   end
+  class EntityException < StandardError
+  end
 end

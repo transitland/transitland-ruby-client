@@ -26,7 +26,6 @@ module TransitlandClient
         create_entities_table if !entities_table_exists?
         
         TransitlandClient::Log.info "Caching entity #{onestop_id}"
-        puts "ENTITY #{entity}" if entity.class != Hash
         raise TransitlandClient::DatabaseException if entity.class != Hash
         @@db.prepare("INSERT INTO entities (onestop_id, entity) VALUES (?,?)").execute(onestop_id, JSON.generate(entity))
       end

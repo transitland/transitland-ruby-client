@@ -13,8 +13,14 @@ module TransitlandClient
             return [entity]
           else
             entity_instance = get_json_data_from_api(endpoint, options)
-            Cache.set_entity(options[:onestop_id].to_url, entity_instance)
-            return [entity_instance]
+            
+            # As we are only searching for a single entity, ensure that is all
+            # we get from the API call
+            raise ApiException if entity_instance.length != 1
+            
+            entity = entity_instance.first
+            Cache.set_entity(options[:onestop_id].to_url, entity)
+            return [entity]
           end
         else
           if entities = Cache.get_query(endpoint, options)
