@@ -5,16 +5,16 @@ module TransitlandClient
     module Fetcher
   
       BASE_PATH    = "https://transit.land/api/v1/"
-      PER_PAGE_KEY = { per_page: 1000 }
+      PER_PAGE_KEY = { per_page: 500 }
   
       def self.get(endpoint, options)
         if options[:onestop_id]
           if entity = Cache.get_entity(options[:onestop_id].to_url)
-            return entity
+            return [entity]
           else
             entity_instance = get_json_data_from_api(endpoint, options)
             Cache.set_entity(options[:onestop_id].to_url, entity_instance)
-            return entity_instance
+            return [entity_instance]
           end
         else
           if entities = Cache.get_query(endpoint, options)
@@ -37,10 +37,6 @@ module TransitlandClient
         options_url = options.to_url.merge(PER_PAGE_KEY)
   
         response = HTTParty.get("#{BASE_PATH}#{endpoint}", query: options_url)
-        puts "RESPONSE #{response}"
-        puts
-        puts
-        puts
         raise TransitlandClient::ApiException if !response[endpoint]
         
         results  = JSON.parse(response.body)

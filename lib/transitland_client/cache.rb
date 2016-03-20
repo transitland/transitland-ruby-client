@@ -25,6 +25,9 @@ module TransitlandClient
       def self.set_entity(onestop_id, entity)
         create_entities_table if !entities_table_exists?
         
+        TransitlandClient::Log.info "Caching entity #{onestop_id}"
+        puts "ENTITY #{entity}" if entity.class != Hash
+        raise TransitlandClient::DatabaseException if entity.class != Hash
         @@db.prepare("INSERT INTO entities (onestop_id, entity) VALUES (?,?)").execute(onestop_id, JSON.generate(entity))
       end
       
@@ -51,10 +54,11 @@ module TransitlandClient
         
         @@db.execute("BEGIN TRANSACTION")
         entities.each_with_index do |entity,i|
-          TransitlandClient::Log.info "Caching #{endpoint} #{i+1} of #{entities.length}"
   
           # FIXME this sucks. Move it into the entity class *somehow*
           onestop_id = (endpoint == "schedule_stop_pairs") ? "#{entity["origin_onestop_id"]}:#{entity["destination_onestop_id"]}:#{entity["route_onestop_id"]}:#{entity["origin_departure_time"]}" : entity["onestop_id"]
+          TransitlandClient::Log.info "Caching #{endpoint} #{i+1} of #{entities.length}"
+          TransitlandClient::Log.info "--#{generate_query_id(endpoint, options)}, #{onestop_id}"
           @@db.execute("INSERT INTO queries (query_id, onestop_id) VALUES (?,?)", [generate_query_id(endpoint, options), onestop_id])
           if !get_entity(onestop_id)
             set_entity(onestop_id, entity)
@@ -106,7 +110,8 @@ module TransitlandClient
         end
         
         def self.create_queries_table
-          @@db.execute("CREATE TABLE queries(query_id varchar(200), onestop_id varchar(50), PRIMARY KEY(query_id))")
+          #@@db.execute("CREATE TABLE queries(query_id varchar(200), onestop_id varchar(50), PRIMARY KEY(query_id, onestop_id))")
+          @@db.execute("CREATE TABLE queries(query_id varchar(200), onestop_id varchar(50))")
           @queries_table = true
         end
   

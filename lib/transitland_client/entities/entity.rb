@@ -2,6 +2,8 @@ module TransitlandClient
   class Entity
     
     def initialize(json)
+      raise ArgumentError if json.class != Hash
+      
       @json       = json
       @attributes = @json.keys.map { |key| key.to_sym }
     end
@@ -30,8 +32,8 @@ module TransitlandClient
       entity_instances.each do |entity|
         found_objects << new(entity)
       end
-
-      return (options[:onestop_id]) ? found_objects.first : found_objects
+      
+      return found_objects
     end
   end
   
