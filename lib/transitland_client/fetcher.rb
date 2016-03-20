@@ -6,7 +6,10 @@ module TransitlandClient
   
       BASE_PATH    = "https://transit.land/api/v1/"
       PER_PAGE_KEY = { per_page: 500 }
-  
+
+      # Get the requested API data, searching either by onestop_id
+      # or any other arbitrary query. Caching will be performed so
+      # that subsequent calls of this method will not require API calls  
       def self.get(endpoint, options)
         if options[:onestop_id]
           if entity = Cache.get_entity(options[:onestop_id].to_url)
@@ -34,7 +37,7 @@ module TransitlandClient
       end
      
       private 
-      #----------------------------------------------------
+
       # Fetch JSON data from a given URL, save attributes with
       # a given field name, and handle pagination (Transitland-specific)
       def self.get_json_data_from_api(endpoint, options)

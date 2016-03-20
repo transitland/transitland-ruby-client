@@ -3,6 +3,9 @@ require 'singleton'
 
 module TransitlandClient
   class Entity
+
+    # The Cache is used to save a local copy of JSON data returned
+    # from HTTP calls to the Transitland API
     class Cache
       include Singleton
   
@@ -70,7 +73,7 @@ module TransitlandClient
       
         OPTIONS = [ :bbox,
                     :date,
-  		              :time_frame ]
+                    :time_frame ]
       
         def self.generate_query_id(endpoint, options)
           query_id = endpoint
