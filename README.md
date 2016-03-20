@@ -30,7 +30,7 @@ To start the console:
 
     bundle exec rake console
 
-To find a single feed by its [Onestop ID](https://github.com/transitland/onestop-id):
+To find a single feed by its [Onestop ID](https://github.com/transitland/onestop-id-scheme):
 
     [1] pry(main)> TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain')
 
