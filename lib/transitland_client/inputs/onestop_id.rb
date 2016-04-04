@@ -11,12 +11,14 @@ module TransitlandClient
 
     attr_accessor :entity_prefix, :geohash, :name
 
-    def initialize(string: nil, entity_prefix: nil, geohash: nil, name: nil)
+#    def initialize(string: nil, entity_prefix: nil, geohash: nil, name: nil)
+    def initialize(string)
       errors = []
 
       if string && string.length > 0
         is_a_valid_onestop_id, errors = OnestopId.validate_onestop_id_string(string)
         if is_a_valid_onestop_id
+          @string = string
           @entity_prefix = string.split(COMPONENT_SEPARATOR)[0]
           @geohash = string.split(COMPONENT_SEPARATOR)[1]
           @name = string.split(COMPONENT_SEPARATOR)[2]
@@ -49,6 +51,10 @@ module TransitlandClient
       else
         self
       end
+    end
+    
+    def to_url
+      @string
     end
 
     def self.validate_onestop_id_string(onestop_id, expected_entity_type: nil)
@@ -90,7 +96,8 @@ module TransitlandClient
       when :geohash
         !(value =~ /[^a-z\d]/)
       when :name
-        !(value =~ /[^a-zA-Z\d]/)
+        # FIXME adding '<' and '~'
+        !(value =~ /[^a-zA-Z<~\d]/)
       else
         false
       end

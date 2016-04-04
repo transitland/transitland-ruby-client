@@ -1,38 +1,25 @@
 describe TransitlandClient::OnestopId do
   context 'initializes as an object' do
     it 'from a string' do
-      good_onestop_id = TransitlandClient::OnestopId.new(string: 'o-9q8y-SFMTA')
+      good_onestop_id = TransitlandClient::OnestopId.new('o-9q8y-SFMTA')
       expect(good_onestop_id.entity_prefix).to eq 'o'
       expect(good_onestop_id.geohash).to eq '9q8y'
       expect(good_onestop_id.name).to eq 'SFMTA'
 
       expect {
-        TransitlandClient::OnestopId.new(string: 'o-9q8y-S&FMTA')
+        TransitlandClient::OnestopId.new('o-9q8y-S&FMTA')
+      }.to raise_error(ArgumentError)
+      expect {
+        TransitlandClient::OnestopId.new('a-9q8y-SFMTA')
+      }.to raise_error(ArgumentError)
+      expect {
+        TransitlandClient::OnestopId.new('o-9q8y')
+      }.to raise_error(ArgumentError)
+      expect {
+        TransitlandClient::OnestopId.new('o--SFMTA')
       }.to raise_error(ArgumentError)
     end
 
-    it 'from components as arguments' do
-      good_onestop_id = TransitlandClient::OnestopId.new(entity_prefix: 'o', geohash: '9q8y', name: 'SFMTA')
-      expect(good_onestop_id.entity_prefix).to eq 'o'
-      expect(good_onestop_id.geohash).to eq '9q8y'
-      expect(good_onestop_id.name).to eq 'SFMTA'
-
-      expect {
-        TransitlandClient::OnestopId.new(entity_prefix: 'a', geohash: '9q8y', name: 'SFMTA')
-      }.to raise_error(ArgumentError)
-
-      expect {
-        TransitlandClient::OnestopId.new(entity_prefix: 'o', geohash: '9q8y')
-      }.to raise_error(ArgumentError)
-
-      expect {
-        TransitlandClient::OnestopId.new(entity_prefix: 'o', geohash: '', name: 'SFMTA')
-      }.to raise_error(ArgumentError)
-
-      expect {
-        TransitlandClient::OnestopId.new(entity_prefix: 'o', geohash: '9q8y', name: 'SF#MTA')
-      }.to raise_error(ArgumentError)
-    end
   end
 
   context 'validates' do

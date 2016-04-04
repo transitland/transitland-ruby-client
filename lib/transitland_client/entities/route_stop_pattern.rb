@@ -1,4 +1,4 @@
 module TransitlandClient
-  class Feed < Entity
+  class RouteStopPattern < Entity
   end
 end
