@@ -2,7 +2,7 @@
 [![Circle CI](https://circleci.com/gh/transitland/transitland-ruby-client.svg?style=svg)](https://circleci.com/gh/transitland/transitland-ruby-client)
 [![Gem Version](https://badge.fury.io/rb/transitland-client.svg)](http://badge.fury.io/rb/transitland-client)
 
-*MIGRATION WARNING*. As of March 2016, this client library is being updated to work with Transitland's [Datastore API](https://github.com/transitland/transitland-datastore/blob/master/README.md#api-endpoints). It will be broken in the meantime. Thank you for your patience!
+*MIGRATION WARNING*. As of March 2016, this client library is being updated to work with Transitland's [Datastore API](https://transit.land/documentation/datastore/api-endpoints.html). It will be broken in the meantime. Thank you for your patience!
 
 ## Installation
 
@@ -30,7 +30,7 @@ To start the console:
 
     bundle exec rake console
 
-To find a single feed by its [Onestop ID](https://github.com/transitland/onestop-id-scheme):
+To find a single feed by its [Onestop ID](https://transit.land/documentation/onestop-id-scheme/):
 
     [1] pry(main)> TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain')
 
