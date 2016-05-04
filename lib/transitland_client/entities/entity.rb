@@ -26,6 +26,11 @@ module TransitlandClient
       raise TransitlandClient::EntityException if !@attributes.include?(key)
       return @json[key.to_s]
     end
+   
+    # Return a list of the attributes this entity contains 
+    def get_attributes
+      return @json.keys
+    end
     
     # Return the attributes of this entity
     def get_attributes

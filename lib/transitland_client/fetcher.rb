@@ -5,7 +5,7 @@ module TransitlandClient
     module Fetcher
   
       BASE_PATH    = "https://transit.land/api/v1/"
-      PER_PAGE_KEY = { per_page: 500 }
+      PER_PAGE_KEY = { per_page: 250 }
 
       # Get the requested API data, searching either by onestop_id
       # or any other arbitrary query. Caching will be performed so
@@ -44,8 +44,9 @@ module TransitlandClient
         data    = []
         
         options_url = options.to_url.merge(PER_PAGE_KEY)
+        url         = "#{BASE_PATH}#{endpoint}"
   
-        response = HTTParty.get("#{BASE_PATH}#{endpoint}", query: options_url)
+        response = HTTParty.get(url, query: options_url)
         raise TransitlandClient::ApiException if !response[endpoint]
         
         results  = JSON.parse(response.body)
@@ -53,8 +54,9 @@ module TransitlandClient
     
         while url = response["meta"]["next"] do
           TransitlandClient::Log.info "Fetching URL: #{url}"
-   
           response = HTTParty.get(url)
+          raise TransitlandClient::ApiException if !response[endpoint]
+   
           results  = JSON.parse(response.body)
           data    += results[endpoint]
         end

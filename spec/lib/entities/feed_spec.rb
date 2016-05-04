@@ -15,6 +15,13 @@ describe TransitlandClient::Feed do
       }.to raise_error(TransitlandClient::EntityException)
     end
     
+    it 'will return an array of its attributes' do
+      VCR.use_cassette("test") do
+        expect(TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain').first.get_attributes).to be_a Array
+        expect(TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain').first.get_attributes.first).to be_a Symbol
+      end
+    end
+    
     it 'will cleanly fail when an invalid key is provided' do
       expect {
         TransitlandClient::Feed.find_by(onestop_id: 'f-9q9-caltrain').first.get(:location)
