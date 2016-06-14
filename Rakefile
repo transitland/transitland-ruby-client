@@ -13,4 +13,8 @@ task :console do
   Pry.start
 end
 
+task :make_changelog do
+  `github_changelog_generator`
+end
+
 task default: :spec

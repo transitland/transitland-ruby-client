@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'virtus', '~> 1.0'
   spec.add_dependency 'git', '~> 1.2'
+  spec.add_dependency 'httparty', '~> 0.13'
+  spec.add_dependency 'sqlite3', '~> 1.3'
 
   spec.add_development_dependency 'rake', '~> 10.0'
 
@@ -33,4 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry', '~> 0.10'
   spec.add_development_dependency 'byebug', '~> 3.5'
   spec.add_development_dependency 'pry-byebug', '~> 3.0'
+
+  spec.add_development_dependency 'github_changelog_generator', '~> 1.12'
 end
