@@ -46,6 +46,7 @@ module TransitlandClient
         options_url = options.to_url.merge(PER_PAGE_KEY)
         url         = "#{BASE_PATH}#{endpoint}"
   
+        TransitlandClient::Log.info "Fetching URL: #{url} with options: #{options_url}"
         response = HTTParty.get(url, query: options_url)
         raise TransitlandClient::ApiException if !response[endpoint]
         
